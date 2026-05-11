@@ -14,6 +14,9 @@ keep-thought/
 ├── remix-demo/              # ✅ Remix 全栈框架
 ├── react-router-demo/       # ✅ React Router 7
 ├── react-form-demo/         # ✅ React Form 表单处理
+├── koa-demo/                # ✅ Koa.js 后端框架
+├── express-demo/            # ✅ Express.js 5 后端框架
+├── react-query-demo/        # ✅ TanStack React Query v5
 └── demo-app/                # 🌐 在线演示网站
 ```
 
@@ -21,7 +24,7 @@ keep-thought/
 
 | 技术 | 版本 | 示例数量 | 内容 |
 |------|------|----------|------|
-| **React 19** | 19.x | 6 个 | Actions、useOptimistic、use()、ref as prop、Form Actions、Metadata |
+| **React 19** | 19.0-19.2 | 7 个 | Actions、useOptimistic、use()、ref as prop、Form Actions、Metadata、19.1/19.2更新(Activity/useEffectEvent/PPR) |
 | **Redux Toolkit** | 2.x | 10 个 | Slice、Thunk、RTK Query、createSelector、中间件 |
 | **Next.js** | 15.x | 6 个 | App Router、Server Components、Data Fetching、Server Actions |
 | **ES6+** | ES2015-ES2024 | 6 个 | 箭头函数、解构、Promise、async/await、模块化、迭代器 |
@@ -29,6 +32,9 @@ keep-thought/
 | **Remix** | 2.x | 5 个 | 路由、Loader、Action、Session、中间件 |
 | **React Router** | 7.x | 5 个 | 嵌套路由、Data Routing、懒加载、错误边界、框架模式 |
 | **React Form** | RHF 7 + Zod | 5 个 | 受控组件、React Hook Form、Zod验证、动态字段、Server Actions |
+| **Koa.js** | 2.x | 6 个 | 洋葱模型、路由、错误处理、REST API、JWT认证、部署 |
+| **Express.js** | 5.0 | 7 个 | 路由、中间件、错误处理、REST API、JWT认证、4→5迁移 |
+| **React Query** | 5.x | 6 个 | useQuery、Mutation、InfiniteQuery、缓存管理、Suspense、SSR |
 
 ## 📖 学习路径
 
