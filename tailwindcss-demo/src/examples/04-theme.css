@@ -1,0 +1,704 @@
+/* ============================================================
+ * Tailwind CSS v4 主题配置教程 (04-theme.css)
+ * ============================================================
+ * 本文件涵盖：
+ *   1. @theme 指令（v4 新的核心配置方式）
+ *   2. 自定义颜色（--color-*）
+ *   3. 自定义间距（--spacing-*）
+ *   4. 自定义字体（--font-*）
+ *   5. CSS 变量覆盖
+ *   6. 暗黑模式（dark: 变体）
+ *   7. @variant 自定义变体
+ *
+ * 适合人群：需要定制项目主题的开发者
+ * 前置知识：01-basics.css, 02-layout.css
+ * ============================================================ */
+
+
+/* ============================================================
+ * 一、@theme 指令 - v4 的核心配置方式
+ * ============================================================
+ *
+ * 在 Tailwind CSS v3 中，所有主题配置都在 tailwind.config.js 中完成。
+ * 在 v4 中，配置迁移到了 CSS 文件中，使用 @theme 指令。
+ *
+ * 优势：
+ *   - 配置和样式在同一个文件中，更直观
+ *   - 可以使用 CSS 变量，更灵活
+ *   - 不需要 JavaScript 配置文件
+ *   - 支持 CSS 嵌套和条件逻辑
+ * ============================================================ */
+
+
+/* --------------------------------------------------
+ * 1.1 @theme 基础用法
+ * --------------------------------------------------
+ * @theme 块中定义的变量会自动生成对应的工具类。
+ * 命名空间约定：
+ *   --color-*     → 颜色工具类（如 bg-*, text-*, border-*）
+ *   --spacing-*   → 间距工具类（如 p-*, m-*, gap-*）
+ *   --font-*      → 字体工具类（如 font-*）
+ *   --text-*      → 字号工具类（如 text-*）
+ *   --radius-*    → 圆角工具类（如 rounded-*）
+ *   --shadow-*    → 阴影工具类（如 shadow-*）
+ *   --inset-*     → 偏移工具类（如 top-*, left-*）
+ *   --animate-*   → 动画工具类（如 animate-*）
+ *   --breakpoint-* → 断点工具类（如 sm:*, md:*）
+ * -------------------------------------------------- */
+
+@import "tailwindcss";
+
+/* 基础的 @theme 配置示例 */
+@theme {
+  /* 自定义主色调 */
+  --color-primary: #3b82f6;
+  --color-primary-light: #93c5fd;
+  --color-primary-dark: #1d4ed8;
+
+  /* 自定义语义颜色 */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #06b6d4;
+
+  /* 自定义间距 */
+  --spacing-18: 4.5rem;
+
+  /* 自定义字体 */
+  --font-display: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+
+  /* 自定义圆角 */
+  --radius-4xl: 2rem;
+
+  /* 自定义阴影 */
+  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+/* 配置完成后，可以直接使用这些工具类：
+ *
+ * <div class="bg-primary text-white rounded-4xl shadow-glow p-6">
+ *   使用自定义主题的元素
+ * </div>
+ *
+ * <h1 class="font-display text-4xl">Display 字体标题</h1>
+ * <p class="font-body text-base">Body 字体正文</p>
+ */
+
+
+/* --------------------------------------------------
+ * 1.2 @theme 中的颜色定义
+ * --------------------------------------------------
+ * 颜色可以定义为单个值，也可以定义为色阶（使用 CSS 变量或嵌套对象）
+ * -------------------------------------------------- */
+
+@theme {
+  /* 方式 1：单个颜色值 */
+  --color-brand: #6366f1;
+
+  /* 方式 2：色阶颜色（使用数字后缀） */
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
+  --color-brand-900: #312e81;
+  --color-brand-950: #1e1b4b;
+}
+
+/* 使用色阶颜色：
+ * <div class="bg-brand-500 text-brand-100">品牌色元素</div>
+ * <button class="bg-brand-600 hover:bg-brand-700 text-white">品牌按钮</button>
+ */
+
+
+/* --------------------------------------------------
+ * 1.3 使用 CSS 变量引用（推荐！）
+ * --------------------------------------------------
+ * 在 @theme 中引用 CSS 变量，可以实现运行时动态切换主题。
+ * 这在暗黑模式和多主题场景中非常有用。
+ * -------------------------------------------------- */
+
+/* 首先在 :root 中定义 CSS 变量 */
+:root {
+  --my-primary: #3b82f6;
+  --my-primary-light: #93c5fd;
+  --my-primary-dark: #1d4ed8;
+  --my-bg: #ffffff;
+  --my-text: #111827;
+  --my-border: #e5e7eb;
+}
+
+/* 暗黑模式下覆盖变量值 */
+:root:where(.dark, .dark *) {
+  --my-primary: #60a5fa;
+  --my-primary-light: #1d4ed8;
+  --my-primary-dark: #93c5fd;
+  --my-bg: #111827;
+  --my-text: #f9fafb;
+  --my-border: #374151;
+}
+
+/* 在 @theme 中引用这些变量 */
+@theme {
+  --color-primary: var(--my-primary);
+  --color-primary-light: var(--my-primary-light);
+  --color-primary-dark: var(--my-primary-dark);
+  --color-surface: var(--my-bg);
+  --color-content: var(--my-text);
+  --color-edge: var(--my-border);
+}
+
+/* 使用：
+ * <div class="bg-surface text-content border-edge">
+ *   这个元素的背景、文字、边框颜色会随暗黑模式自动切换
+ * </div>
+ */
+
+
+/* ============================================================
+ * 二、自定义颜色详解
+ * ============================================================ */
+
+
+/* --------------------------------------------------
+ * 2.1 使用 OKLCH 颜色空间（v4 推荐）
+ * --------------------------------------------------
+ * Tailwind CSS v4 默认使用 OKLCH 颜色空间。
+ * OKLCH 的优势：
+ *   - 感知均匀：相同数字变化在人眼看来变化量一致
+ *   - 支持广色域（P3）：可以显示更丰富的颜色
+ *   - 更好的暗黑模式支持
+ * -------------------------------------------------- */
+
+@theme {
+  /* 使用 OKLCH 定义颜色 */
+  --color-accent: oklch(0.7 0.15 250);
+  --color-accent-light: oklch(0.85 0.1 250);
+  --color-accent-dark: oklch(0.5 0.15 250);
+
+  /* 也可以混合使用，Tailwind 会自动处理 */
+  --color-highlight: #fbbf24; /* 传统 HEX */
+  --color-muted: oklch(0.5 0 0); /* OKLCH 灰色 */
+}
+
+/* --------------------------------------------------
+ * 2.2 颜色透明度修饰符
+ * --------------------------------------------------
+ * v4 支持在颜色后添加透明度：
+ *   bg-primary/50   → 主色 50% 透明度
+ *   text-red-500/75 → 红色 75% 透明度
+ *   border-white/20 → 白色 20% 透明度
+ * -------------------------------------------------- */
+
+/* HTML 用法：
+ * <div class="bg-primary/10 border border-primary/20 rounded-lg p-4">
+ *   半透明主色背景
+ * </div>
+ *
+ * <div class="bg-black/50 backdrop-blur-sm">
+ *   半透明黑色遮罩
+ * </div>
+ *
+ * <span class="text-red-500/60">半透明红色文字</span>
+ */
+
+
+/* ============================================================
+ * 三、自定义间距
+ * ============================================================ */
+
+
+/* --------------------------------------------------
+ * 3.1 扩展默认间距
+ * --------------------------------------------------
+ * Tailwind 默认间距：0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 72, 80, 96
+ * 你可以在 @theme 中添加额外的间距值。
+ * -------------------------------------------------- */
+
+@theme {
+  /* 添加自定义间距 */
+  --spacing-18: 4.5rem;     /* 72px */
+  --spacing-88: 22rem;      /* 352px */
+  --spacing-128: 32rem;     /* 512px */
+
+  /* 也可以使用任意值，无需在 @theme 中定义 */
+  /* 直接在 HTML 中使用：p-[72px], m-[22rem] 等 */
+}
+
+/* HTML 用法：
+ * <div class="p-18">72px 内边距</div>
+ * <div class="mt-88">352px 外边距</div>
+ *
+ * 或者使用任意值（无需 @theme 配置）：
+ * <div class="p-[72px]">72px 内边距</div>
+ * <div class="gap-[15px]">15px 间距</div>
+ */
+
+
+/* ============================================================
+ * 四、自定义字体
+ * ============================================================ */
+
+
+/* --------------------------------------------------
+ * 4.1 定义字体族
+ * -------------------------------------------------- */
+
+@theme {
+  /* 自定义字体族 */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+  --font-mono: "Fira Code", ui-monospace, monospace;
+
+  /* 自定义字体族名称 */
+  --font-display: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+  --font-code: "Fira Code", monospace;
+}
+
+/* HTML 用法：
+ * <h1 class="font-display text-4xl">Display 字体标题</h1>
+ * <p class="font-body text-base">Body 字体正文</p>
+ * <code class="font-code text-sm">Code 字体代码</code>
+ * <p class="font-serif italic">Serif 字体引用</p>
+ */
+
+
+/* --------------------------------------------------
+ * 4.2 定义字号
+ * -------------------------------------------------- */
+
+@theme {
+  /* 自定义字号 */
+  --text-7xl: 5rem;          /* 80px */
+  --text-8xl: 6rem;          /* 96px */
+  --text-9xl: 8rem;          /* 128px */
+
+  /* 自定义行高 */
+  --leading-tighter: 1.1;
+  --leading-looser: 2.5;
+}
+
+/* HTML 用法：
+ * <h1 class="text-7xl font-bold leading-tighter">超大标题</h1>
+ * <p class="text-base leading-loose">宽松行高的正文</p>
+ */
+
+
+/* --------------------------------------------------
+ * 4.3 使用 @font-face 加载自定义字体
+ * -------------------------------------------------- */
+
+/* 在 CSS 中定义 @font-face */
+/*
+  @font-face {
+    font-family: "MyCustomFont";
+    src: url("/fonts/my-custom-font.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+*/
+
+/* 然后在 @theme 中引用 */
+/*
+  @theme {
+    --font-custom: "MyCustomFont", sans-serif;
+  }
+*/
+
+/* HTML 用法：
+ * <p class="font-custom">使用自定义字体的文字</p>
+ */
+
+
+/* ============================================================
+ * 五、CSS 变量覆盖
+ * ============================================================
+ *
+ * Tailwind CSS v4 的所有默认值都通过 CSS 变量定义。
+ * 你可以通过覆盖这些变量来修改默认行为。
+ * ============================================================ */
+
+
+/* --------------------------------------------------
+ * 5.1 覆盖默认颜色
+ * --------------------------------------------------
+ * Tailwind v4 内置的颜色变量格式：--color-{name}-{shade}
+ * -------------------------------------------------- */
+
+:root {
+  /* 覆盖默认的蓝色 */
+  --color-blue-500: oklch(0.623 0.214 259);
+  --color-blue-600: oklch(0.546 0.245 262);
+
+  /* 覆盖默认的灰色 */
+  --color-gray-50: #fafaf9;
+  --color-gray-100: #f5f5f4;
+  --color-gray-200: #e7e5e4;
+  --color-gray-300: #d6d3d1;
+  --color-gray-400: #a8a29e;
+  --color-gray-500: #78716c;
+  --color-gray-600: #57534e;
+  --color-gray-700: #44403c;
+  --color-gray-800: #292524;
+  --color-gray-900: #1c1917;
+}
+
+/* 覆盖后，所有使用这些颜色的工具类都会自动更新：
+ * <div class="bg-blue-500">使用自定义蓝色的元素</div>
+ * <p class="text-gray-600">使用自定义灰色的文字</p>
+ */
+
+
+/* --------------------------------------------------
+ * 5.2 覆盖默认间距
+ * -------------------------------------------------- */
+
+:root {
+  /* 修改默认间距比例（默认 1 = 0.25rem） */
+  /* 注意：修改此变量会影响所有间距工具类 */
+  /* --spacing: 0.25rem; */
+}
+
+/* --------------------------------------------------
+ * 5.3 覆盖默认断点
+ * -------------------------------------------------- */
+
+@theme {
+  /* 自定义断点 */
+  --breakpoint-xs: 475px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  --breakpoint-3xl: 1920px;
+}
+
+/* 使用自定义断点：
+ * <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+ *   <div>响应式网格</div>
+ * </div>
+ */
+
+
+/* ============================================================
+ * 六、暗黑模式（Dark Mode）
+ * ============================================================
+ *
+ * Tailwind CSS v4 支持两种暗黑模式策略：
+ *   1. class 策略：在 <html> 元素上添加 dark 类
+ *   2. media 策略：根据系统偏好自动切换
+ *
+ * v4 默认使用 media 策略，推荐使用 class 策略以获得更多控制。
+ * ============================================================ */
+
+
+/* --------------------------------------------------
+ * 6.1 配置暗黑模式策略
+ * -------------------------------------------------- */
+
+/* 方式 1：使用 @custom-variant 配置 class 策略（推荐） */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 方式 2：使用 media 策略（v4 默认） */
+/* 无需额外配置，系统自动检测 prefers-color-scheme */
+
+/* 方式 3：使用 @variant 配置 */
+/* @variant dark (&:where(.dark, .dark *)); */
+
+
+/* --------------------------------------------------
+ * 6.2 使用 dark: 变体
+ * --------------------------------------------------
+ * dark: 前缀用于定义暗黑模式下的样式。
+ * 当暗黑模式激活时，dark: 的样式会覆盖默认样式。
+ * -------------------------------------------------- */
+
+/* HTML 用法 - 基础暗黑模式：
+ *
+ * <div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+ *   <h1 class="text-2xl font-bold">标题</h1>
+ *   <p class="text-gray-600 dark:text-gray-400">正文内容</p>
+ * </div>
+ */
+
+/* HTML 用法 - 按钮：
+ * <button class="bg-blue-600 dark:bg-blue-500 text-white
+ *               hover:bg-blue-700 dark:hover:bg-blue-400
+ *               transition-colors duration-200">
+ *   暗黑模式按钮
+ * </button>
+ */
+
+/* HTML 用法 - 卡片：
+ * <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg
+ *            dark:shadow-gray-900/50 border border-gray-200
+ *            dark:border-gray-700 p-6">
+ *   <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+ *     暗黑模式卡片
+ *   </h3>
+ *   <p class="text-gray-600 dark:text-gray-400 mt-2">
+ *     卡片描述文字
+ *   </p>
+ * </div>
+ */
+
+/* HTML 用法 - 导航栏：
+ * <nav class="bg-white dark:bg-gray-900 border-b border-gray-200
+ *            dark:border-gray-800">
+ *   <div class="flex items-center justify-between px-6 py-4">
+ *     <a href="#" class="text-xl font-bold text-gray-900 dark:text-white">Logo</a>
+ *     <div class="flex gap-4">
+ *       <a href="#" class="text-gray-600 dark:text-gray-300 hover:text-blue-500">
+ *         首页
+ *       </a>
+ *     </div>
+ *   </div>
+ * </nav>
+ */
+
+
+/* --------------------------------------------------
+ * 6.3 暗黑模式切换按钮
+ * -------------------------------------------------- */
+
+/* HTML 用法：
+ * <button id="theme-toggle"
+ *         class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800
+ *                hover:bg-gray-200 dark:hover:bg-gray-700
+ *                transition-colors duration-200">
+ *   <svg class="w-5 h-5 hidden dark:block text-yellow-400">太阳图标</svg>
+ *   <svg class="w-5 h-5 block dark:hidden text-gray-600">月亮图标</svg>
+ * </button>
+ */
+
+/* JavaScript 切换逻辑：
+ *
+ * // 获取主题切换按钮
+ * const toggle = document.getElementById('theme-toggle');
+ *
+ * // 切换暗黑模式
+ * toggle.addEventListener('click', () => {
+ *   document.documentElement.classList.toggle('dark');
+ *   // 可选：保存用户偏好到 localStorage
+ *   const isDark = document.documentElement.classList.contains('dark');
+ *   localStorage.setItem('theme', isDark ? 'dark' : 'light');
+ * });
+ *
+ * // 初始化时读取用户偏好
+ * if (localStorage.getItem('theme') === 'dark' ||
+ *     (!localStorage.getItem('theme') &&
+ *      window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+ *   document.documentElement.classList.add('dark');
+ * }
+ */
+
+
+/* --------------------------------------------------
+ * 6.4 暗黑模式下的图片处理
+ * -------------------------------------------------- */
+
+/* HTML 用法 - 暗黑模式下降低图片亮度：
+ * <img src="photo.jpg"
+ *      class="rounded-lg brightness-100 dark:brightness-90
+ *             contrast-100 dark:contrast-95">
+ */
+
+/* HTML 用法 - 暗黑模式下反转 Logo 颜色：
+ * <img src="logo.svg"
+ *      class="h-8 dark:invert">
+ */
+
+
+/* --------------------------------------------------
+ * 6.5 完整暗黑模式页面示例
+ * -------------------------------------------------- */
+
+/* HTML 用法：
+ *
+ * <!DOCTYPE html>
+ * <html lang="zh-CN">
+ * <head>
+ *   <meta charset="UTF-8">
+ *   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ *   <title>暗黑模式示例</title>
+ *   <link rel="stylesheet" href="04-theme.css">
+ * </head>
+ * <body class="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100
+ *            transition-colors duration-300">
+ *
+ *   导航栏
+ *   <nav class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md
+ *              border-b border-gray-200 dark:border-gray-800">
+ *     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+ *       <span class="font-bold text-lg">MyApp</span>
+ *       <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100
+ *                                          dark:hover:bg-gray-800">
+ *         <svg class="w-5 h-5 hidden dark:block">太阳</svg>
+ *         <svg class="w-5 h-5 block dark:hidden">月亮</svg>
+ *       </button>
+ *     </div>
+ *   </nav>
+ *
+ *   主内容
+ *   <main class="max-w-6xl mx-auto px-4 py-12">
+ *     <h1 class="text-4xl font-bold mb-8">欢迎</h1>
+ *     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+ *       <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6
+ *                   border border-gray-200 dark:border-gray-800">
+ *         <h3 class="font-semibold mb-2">卡片 1</h3>
+ *         <p class="text-gray-600 dark:text-gray-400">内容描述</p>
+ *       </div>
+ *     </div>
+ *   </main>
+ *
+ * </body>
+ * </html>
+ */
+
+
+/* ============================================================
+ * 七、@variant 自定义变体
+ * ============================================================
+ *
+ * v4 允许你创建自定义变体，类似于 dark: 或 hover:。
+ * 这对于创建特定场景的样式变体非常有用。
+ * ============================================================ */
+
+
+/* --------------------------------------------------
+ * 7.1 @custom-variant 基础用法
+ * -------------------------------------------------- */
+
+/* 创建一个 "portrait" 变体（竖屏时生效） */
+@custom-variant portrait (&:where(.portrait, .portrait *));
+
+/* 创建一个 "rtl" 变体（从右到左语言） */
+@custom-variant rtl (&:where([dir="rtl"] *));
+
+/* 创建一个 "hocus" 变体（hover 或 focus 时生效） */
+@custom-variant hocus (&:hover, &:focus);
+
+/* HTML 用法：
+ * <div class="portrait:flex portrait:flex-col">
+ *   竖屏时使用 flex 布局
+ * </div>
+ *
+ * <div class="hocus:text-blue-500 hocus:underline">
+ *   悬停或聚焦时变色并加下划线
+ * </div>
+ */
+
+
+/* --------------------------------------------------
+ * 7.2 基于数据属性的变体
+ * -------------------------------------------------- */
+
+/* 创建基于 data-* 属性的变体 */
+@custom-variant data-active (&:where([data-active="true"], [data-active="true"] *));
+
+/* HTML 用法：
+ * <div data-active="true" class="data-active:bg-blue-500 data-active:text-white">
+ *   当 data-active="true" 时应用样式
+ * </div>
+ */
+
+
+/* --------------------------------------------------
+ * 7.3 组合变体
+ * -------------------------------------------------- */
+
+/* 创建组合变体：暗黑模式下的 hover */
+/* 直接在 HTML 中链式使用即可：
+ * <button class="dark:hover:bg-blue-400">
+ *   暗黑模式下的 hover 效果
+ * </button>
+ */
+
+
+/* ============================================================
+ * 八、完整主题配置示例
+ * ============================================================
+ *
+ * 下面是一个完整的项目主题配置示例，
+ * 包含颜色、字体、间距、断点、暗黑模式等。
+ * ============================================================ */
+
+/*
+  @import "tailwindcss";
+
+  // 暗黑模式配置（class 策略）
+  @custom-variant dark (&:where(.dark, .dark *));
+
+  // 自定义变体
+  @custom-variant hocus (&:hover, &:focus);
+
+  // 主题配置
+  @theme {
+    // 品牌颜色
+    --color-primary-50: oklch(0.97 0.01 250);
+    --color-primary-100: oklch(0.93 0.03 250);
+    --color-primary-200: oklch(0.86 0.06 250);
+    --color-primary-300: oklch(0.76 0.10 250);
+    --color-primary-400: oklch(0.65 0.15 250);
+    --color-primary-500: oklch(0.55 0.20 250);
+    --color-primary-600: oklch(0.50 0.20 250);
+    --color-primary-700: oklch(0.45 0.18 250);
+    --color-primary-800: oklch(0.40 0.15 250);
+    --color-primary-900: oklch(0.35 0.12 250);
+
+    // 语义颜色
+    --color-success: oklch(0.65 0.20 145);
+    --color-warning: oklch(0.75 0.15 85);
+    --color-danger: oklch(0.60 0.22 25);
+
+    // 字体
+    --font-sans: "Inter", system-ui, sans-serif;
+    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+
+    // 圆角
+    --radius-btn: 0.5rem;
+    --radius-card: 0.75rem;
+    --radius-modal: 1rem;
+
+    // 阴影
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+
+    // 断点
+    --breakpoint-3xl: 1920px;
+  }
+
+  // CSS 变量（用于运行时主题切换）
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+  }
+
+  :root:where(.dark, .dark *) {
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --border-color: #374151;
+  }
+
+  @theme {
+    --color-surface: var(--bg-primary);
+    --color-surface-alt: var(--bg-secondary);
+    --color-content: var(--text-primary);
+    --color-content-muted: var(--text-secondary);
+    --color-edge: var(--border-color);
+  }
+*/

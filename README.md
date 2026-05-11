@@ -17,6 +17,9 @@ keep-thought/
 ├── koa-demo/                # ✅ Koa.js 后端框架
 ├── express-demo/            # ✅ Express.js 5 后端框架
 ├── react-query-demo/        # ✅ TanStack React Query v5
+├── antd-demo/               # ✅ Ant Design 5 组件库
+├── tailwindcss-demo/        # ✅ Tailwind CSS v4
+├── vue-ecosystem-demo/      # ✅ Vue 3 + Vite + Vue Router + Pinia
 └── demo-app/                # 🌐 在线演示网站
 ```
 
@@ -35,6 +38,9 @@ keep-thought/
 | **Koa.js** | 2.x | 6 个 | 洋葱模型、路由、错误处理、REST API、JWT认证、部署 |
 | **Express.js** | 5.0 | 7 个 | 路由、中间件、错误处理、REST API、JWT认证、4→5迁移 |
 | **React Query** | 5.x | 6 个 | useQuery、Mutation、InfiniteQuery、缓存管理、Suspense、SSR |
+| **Ant Design** | 5.x | 7 个 | Button/Form/Table/反馈组件/导航/Layout/主题定制/暗黑模式 |
+| **Tailwind CSS** | 4.x | 6 个 | 基础工具类、Flex/Grid布局、组件样式、@theme主题、动画、v3→v4迁移 |
+| **Vue 3 生态** | 3.5.x | 7 个 | 模板语法/组件系统、Vite 6配置、Vue Router 4、Pinia 2、Composables、Vapor Mode |
 
 ## 📖 学习路径
 

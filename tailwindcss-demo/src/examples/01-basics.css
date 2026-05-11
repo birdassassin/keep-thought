@@ -1,0 +1,883 @@
+/* ============================================================
+ * Tailwind CSS v4 基础教程 (01-basics.css)
+ * ============================================================
+ * 本文件涵盖：
+ *   1. 安装方式（Vite / Webpack / CLI）
+ *   2. @import "tailwindcss" 导入语法
+ *   3. 基础工具类（间距、尺寸、弹性/网格、文字、背景、边框、阴影）
+ *   4. 响应式设计（sm / md / lg / xl / 2xl）
+ *   5. 交互状态（hover / focus / active / disabled）
+ *
+ * 适合人群：Tailwind CSS 初学者
+ * ============================================================ */
+
+
+/* ============================================================
+ * 一、安装方式
+ * ============================================================
+ *
+ * Tailwind CSS v4 提供了多种安装方式，根据你的项目类型选择：
+ *
+ * --- 方式 1：Vite（推荐，最简单）---
+ *
+ *   步骤 1: 安装依赖
+ *   $ npm install tailwindcss @tailwindcss/vite
+ *
+ *   步骤 2: 在 vite.config.js 中注册插件
+ *   import { defineConfig } from 'vite'
+ *   import tailwindcss from '@tailwindcss/vite'
+ *   export default defineConfig({
+ *     plugins: [tailwindcss()],
+ *   })
+ *
+ *   步骤 3: 在 CSS 入口文件中导入
+ *   @import "tailwindcss";
+ *
+ * --- 方式 2：Webpack ---
+ *
+ *   步骤 1: 安装依赖
+ *   $ npm install tailwindcss @tailwindcss/postcss
+ *
+ *   步骤 2: 在 postcss.config.js 中配置
+ *   export default {
+ *     plugins: {
+ *       '@tailwindcss/postcss': {},
+ *     },
+ *   }
+ *
+ *   步骤 3: 在 CSS 入口文件中导入
+ *   @import "tailwindcss";
+ *
+ * --- 方式 3：CLI（独立使用，无需构建工具）---
+ *
+ *   步骤 1: 安装 CLI
+ *   $ npm install -D tailwindcss
+ *
+ *   步骤 2: 创建 input.css 文件并导入
+ *   @import "tailwindcss";
+ *
+ *   步骤 3: 编译输出
+ *   $ npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
+ *
+ * --- 方式 4：CDN（仅用于原型/演示）---
+ *
+ *   <script src="https://cdn.tailwindcss.com"></script>
+ *
+ * ============================================================ */
+
+
+/* ============================================================
+ * 二、导入 Tailwind CSS
+ * ============================================================
+ *
+ * v4 使用标准的 CSS @import 语法导入 Tailwind：
+ * 只需要一行代码，替代了 v3 中的三个 @tailwind 指令。
+ * ============================================================ */
+
+@import "tailwindcss";
+
+/* 如果你想给所有 Tailwind 类名添加前缀（避免冲突），可以这样写： */
+/* @import "tailwindcss" prefix(tw); */
+/* 使用前缀后，类名变为 tw:flex, tw:text-blue-500 等 */
+
+
+/* ============================================================
+ * 三、基础工具类
+ * ============================================================
+ *
+ * Tailwind 的核心理念是"工具类优先"（Utility-First），
+ * 每个工具类对应一个 CSS 属性，通过组合工具类来构建界面。
+ *
+ * 命名规律：
+ *   - 属性名-值：如 text-red-500（color: red）
+ *   - 响应式前缀：如 md:text-lg（在中等屏幕及以上生效）
+ *   - 状态前缀：如 hover:bg-blue-600（鼠标悬停时生效）
+ * ============================================================ */
+
+
+/* --------------------------------------------------
+ * 3.1 间距工具类（Margin / Padding）
+ * --------------------------------------------------
+ * 命名规则：
+ *   m{方向}-{大小}  → margin
+ *   p{方向}-{大小}  → padding
+ *
+ * 方向：
+ *   (无) = 四周    t = top    b = bottom
+ *   s = start(左)  e = end(右)  x = 水平(左右)  y = 垂直(上下)
+ *
+ * 大小（默认 1 = 0.25rem = 4px）：
+ *   0 = 0px    0.5 = 2px    1 = 4px     2 = 8px
+ *   3 = 12px   4 = 16px     5 = 20px    6 = 24px
+ *   8 = 32px   10 = 40px    12 = 48px   16 = 64px
+ *   20 = 80px  24 = 96px    32 = 128px  40 = 160px
+ *   px = 1px   auto = auto
+ * -------------------------------------------------- */
+
+/* Margin 示例 */
+.margin-examples {
+  /* 四周外边距 */
+  @apply m-4;          /* margin: 1rem;          四周 16px */
+  @apply mx-auto;      /* margin-inline: auto;   水平居中（最常用！） */
+  @apply my-2;         /* margin-block: 0.5rem;  垂直 8px */
+
+  /* 单方向外边距 */
+  @apply mt-4;         /* margin-top: 1rem;      上方 16px */
+  @apply mb-2;         /* margin-bottom: 0.5rem; 下方 8px */
+  @apply ms-4;         /* margin-inline-start: 1rem; 左侧 16px */
+  @apply me-4;         /* margin-inline-end: 1rem;   右侧 16px */
+
+  /* 负值 margin（使用减号前缀） */
+  @apply -mt-4;        /* margin-top: -1rem;     上方负 16px */
+}
+
+/* Padding 示例 */
+.padding-examples {
+  /* 四周内边距 */
+  @apply p-4;          /* padding: 1rem;         四周 16px */
+  @apply p-6;          /* padding: 1.5rem;       四周 24px */
+
+  /* 单方向内边距 */
+  @apply pt-2;         /* padding-top: 0.5rem;   上方 8px */
+  @apply px-4;         /* padding-inline: 1rem;  水平 16px */
+  @apply py-3;         /* padding-block: 0.75rem; 垂直 12px */
+}
+
+/* 对应的 HTML 用法：
+ *
+ * <div class="m-4 p-6 bg-white rounded-lg">
+ *   <h2 class="mb-2 text-xl font-bold">标题</h2>
+ *   <p class="mt-1 px-4 py-2 text-gray-600">内容文字</p>
+ * </div>
+ */
+
+
+/* --------------------------------------------------
+ * 3.2 尺寸工具类（Width / Height）
+ * --------------------------------------------------
+ * 命名规则：
+ *   w-{值}  → width
+ *   h-{值}  → height
+ *   min-w-{值} / max-w-{值}  → 最小/最大宽度
+ *   min-h-{值} / max-h-{值}  → 最小/最大高度
+ *
+ * 常用值：
+ *   auto    = auto
+ *   full    = 100%
+ *   screen  = 100vw / 100vh
+ *   min     = min-content
+ *   max     = max-content
+ *   fit     = fit-content
+ *   数字    = rem 单位（如 w-64 = 16rem = 256px）
+ *   分数    = 百分比（如 w-1/2 = 50%, w-1/3 = 33.333%）
+ *   px      = 1px
+ * -------------------------------------------------- */
+
+.size-examples {
+  /* 固定宽度 */
+  @apply w-64;         /* width: 16rem;          256px */
+  @apply w-96;         /* width: 24rem;          384px */
+  @apply w-full;       /* width: 100%;           占满父容器 */
+  @apply w-screen;     /* width: 100vw;          占满视口宽度 */
+  @apply w-auto;       /* width: auto;           自动宽度 */
+
+  /* 固定高度 */
+  @apply h-16;         /* height: 4rem;          64px */
+  @apply h-32;         /* height: 8rem;          128px */
+  @apply h-full;       /* height: 100%;          占满父容器 */
+  @apply h-screen;     /* height: 100vh;         占满视口高度 */
+
+  /* 百分比宽度（分数语法） */
+  @apply w-1/2;        /* width: 50%;            一半宽度 */
+  @apply w-1/3;        /* width: 33.333%;        三分之一宽度 */
+  @apply w-2/3;        /* width: 66.666%;        三分之二宽度 */
+  @apply w-1/4;        /* width: 25%;            四分之一宽度 */
+  @apply w-3/4;        /* width: 75%;            四分之三宽度 */
+  @apply w-full;       /* width: 100%;           全部宽度 */
+
+  /* 最大/最小尺寸 */
+  @apply max-w-md;     /* max-width: 28rem;      最大宽度 448px */
+  @apply max-w-lg;     /* max-width: 32rem;      最大宽度 512px */
+  @apply max-w-xl;     /* max-width: 36rem;      最大宽度 576px */
+  @apply max-w-2xl;    /* max-width: 42rem;      最大宽度 672px */
+  @apply max-w-screen-sm; /* max-width: 640px;   最大宽度 640px */
+  @apply max-w-screen-md; /* max-width: 768px;   最大宽度 768px */
+  @apply min-h-screen; /* min-height: 100vh;     最小高度为视口高度 */
+
+  /* 宽高比（v4 新增） */
+  @apply aspect-square; /* aspect-ratio: 1 / 1;  正方形 */
+  @apply aspect-video;  /* aspect-ratio: 16 / 9; 视频比例 */
+  @apply aspect-[4/3];  /* aspect-ratio: 4 / 3;  自定义比例 */
+}
+
+/* 对应的 HTML 用法：
+ *
+ * <div class="w-full max-w-2xl mx-auto">
+ *   <div class="h-64 bg-blue-100 rounded-lg flex items-center justify-center">
+ *     <p>一个 100% 宽度、最大 672px、高度 256px 的容器</p>
+ *   </div>
+ * </div>
+ */
+
+
+/* --------------------------------------------------
+ * 3.3 Flexbox 弹性布局工具类
+ * --------------------------------------------------
+ * 核心工具类：
+ *   flex        → display: flex
+ *   flex-row    → flex-direction: row（默认，水平排列）
+ *   flex-col    → flex-direction: column（垂直排列）
+ *   flex-wrap   → flex-wrap: wrap（换行）
+ *   flex-nowrap → flex-wrap: nowrap（不换行，默认）
+ *
+ * 主轴对齐（justify-content）：
+ *   justify-start    → 起始对齐
+ *   justify-center   → 居中对齐
+ *   justify-end      → 末尾对齐
+ *   justify-between  → 两端对齐，中间等距
+ *   justify-around   → 等距分布
+ *   justify-evenly   → 均匀分布
+ *
+ * 交叉轴对齐（align-items）：
+ *   items-start      → 顶部对齐
+ *   items-center     → 垂直居中
+ *   items-end        → 底部对齐
+ *   items-stretch    → 拉伸填满（默认）
+ *   items-baseline   → 基线对齐
+ *
+ * 间距：
+ *   gap-{大小}       → gap 属性
+ * -------------------------------------------------- */
+
+.flex-examples {
+  /* 基础 Flex 容器 */
+  @apply flex;              /* display: flex; */
+
+  /* 方向 */
+  @apply flex-row;          /* 水平排列（默认） */
+  @apply flex-col;          /* 垂直排列 */
+  @apply flex-row-reverse;  /* 水平反向排列 */
+
+  /* 换行 */
+  @apply flex-wrap;         /* 允许换行 */
+  @apply flex-nowrap;       /* 不允许换行 */
+
+  /* 主轴对齐 */
+  @apply justify-start;     /* 左对齐 */
+  @apply justify-center;    /* 水平居中 */
+  @apply justify-end;       /* 右对齐 */
+  @apply justify-between;   /* 两端对齐 */
+  @apply justify-around;    /* 等距分布 */
+  @apply justify-evenly;    /* 均匀分布 */
+
+  /* 交叉轴对齐 */
+  @apply items-start;       /* 顶部对齐 */
+  @apply items-center;      /* 垂直居中 */
+  @apply items-end;         /* 底部对齐 */
+  @apply items-stretch;     /* 拉伸填满 */
+
+  /* 间距 */
+  @apply gap-2;             /* gap: 0.5rem;   8px */
+  @apply gap-4;             /* gap: 1rem;     16px */
+  @apply gap-x-4;           /* column-gap: 1rem;  水平间距 */
+  @apply gap-y-2;           /* row-gap: 0.5rem;   垂直间距 */
+
+  /* Flex 子项控制 */
+  @apply flex-1;            /* flex: 1 1 0%;    等分剩余空间 */
+  @apply flex-none;         /* flex: none;      不伸缩 */
+  @apply flex-shrink-0;     /* flex-shrink: 0;  不缩小 */
+  @apply flex-grow;         /* flex-grow: 1;    可放大 */
+}
+
+/* 对应的 HTML 用法：
+ *
+ * 水平居中容器：
+ * <div class="flex items-center justify-center h-64">
+ *   <p>水平垂直居中的内容</p>
+ * </div>
+ *
+ * 导航栏布局：
+ * <nav class="flex items-center justify-between px-6 py-4">
+ *   <div class="text-xl font-bold">Logo</div>
+ *   <div class="flex gap-4">
+ *     <a href="#" class="hover:text-blue-500">首页</a>
+ *     <a href="#" class="hover:text-blue-500">关于</a>
+ *   </div>
+ * </nav>
+ */
+
+
+/* --------------------------------------------------
+ * 3.4 Grid 网格布局工具类
+ * --------------------------------------------------
+ * 核心工具类：
+ *   grid          → display: grid
+ *   grid-cols-{n} → 定义列数
+ *   grid-rows-{n} → 定义行数
+ *   col-span-{n}  → 跨列
+ *   row-span-{n}  → 跨行
+ * -------------------------------------------------- */
+
+.grid-examples {
+  /* 基础 Grid 容器 */
+  @apply grid;              /* display: grid; */
+
+  /* 定义列数 */
+  @apply grid-cols-1;       /* 1 列 */
+  @apply grid-cols-2;       /* 2 列 */
+  @apply grid-cols-3;       /* 3 列 */
+  @apply grid-cols-4;       /* 4 列 */
+  @apply grid-cols-6;       /* 6 列 */
+  @apply grid-cols-12;      /* 12 列（常用于复杂布局） */
+
+  /* 自定义列宽 */
+  @apply grid-cols-[1fr_2fr_1fr]; /* 三列，中间列是两侧的两倍宽 */
+
+  /* 定义行数 */
+  @apply grid-rows-2;       /* 2 行 */
+  @apply grid-rows-3;       /* 3 行 */
+
+  /* 跨列 / 跨行 */
+  @apply col-span-2;        /* 跨 2 列 */
+  @apply col-span-full;     /* 跨所有列 */
+  @apply row-span-2;        /* 跨 2 行 */
+
+  /* 间距 */
+  @apply gap-4;             /* grid 的 gap 与 flex 相同 */
+}
+
+/* 对应的 HTML 用法：
+ *
+ * 三列网格：
+ * <div class="grid grid-cols-3 gap-4">
+ *   <div class="bg-blue-100 p-4">列 1</div>
+ *   <div class="bg-blue-100 p-4">列 2</div>
+ *   <div class="bg-blue-100 p-4">列 3</div>
+ * </div>
+ *
+ * 响应式网格（移动端 1 列，桌面端 3 列）：
+ * <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+ *   <div>卡片 1</div>
+ *   <div>卡片 2</div>
+ *   <div>卡片 3</div>
+ * </div>
+ */
+
+
+/* --------------------------------------------------
+ * 3.5 文字排版工具类（Text / Font）
+ * --------------------------------------------------
+ * 字体大小（text-{大小}）：
+ *   text-xs   = 0.75rem    (12px)
+ *   text-sm   = 0.875rem   (14px)
+ *   text-base = 1rem       (16px，默认)
+ *   text-lg   = 1.125rem   (18px)
+ *   text-xl   = 1.25rem    (20px)
+ *   text-2xl  = 1.5rem     (24px)
+ *   text-3xl  = 1.875rem   (30px)
+ *   text-4xl  = 2.25rem    (36px)
+ *   text-5xl  = 3rem       (48px)
+ *
+ * 字体粗细（font-{粗细}）：
+ *   font-thin      = 100    font-extralight = 200
+ *   font-light     = 300    font-normal     = 400（默认）
+ *   font-medium    = 500    font-semibold   = 600
+ *   font-bold      = 700    font-extrabold  = 800
+ *   font-black     = 900
+ *
+ * 文字颜色（text-{颜色}-{色阶}）：
+ *   text-white, text-black
+ *   text-gray-500, text-blue-600, text-red-500 等
+ *
+ * 文字对齐（text-{对齐}）：
+ *   text-left, text-center, text-right, text-justify
+ *
+ * 行高（leading-{大小}）：
+ *   leading-none = 1    leading-tight = 1.25
+ *   leading-snug = 1.375  leading-normal = 1.5
+ *   leading-relaxed = 1.625  leading-loose = 2
+ *
+ * 字间距（tracking-{大小}）：
+ *   tracking-tighter = -0.05em   tracking-tight = -0.025em
+ *   tracking-normal = 0em         tracking-wide = 0.025em
+ *   tracking-wider = 0.05em       tracking-widest = 0.1em
+ * -------------------------------------------------- */
+
+.text-examples {
+  /* 字体大小 */
+  @apply text-xs;         /* 12px */
+  @apply text-sm;         /* 14px */
+  @apply text-base;       /* 16px（默认） */
+  @apply text-lg;         /* 18px */
+  @apply text-xl;         /* 20px */
+  @apply text-2xl;        /* 24px */
+  @apply text-3xl;        /* 30px */
+  @apply text-4xl;        /* 36px */
+  @apply text-5xl;        /* 48px */
+
+  /* 字体粗细 */
+  @apply font-thin;       /* 100 */
+  @apply font-light;      /* 300 */
+  @apply font-normal;     /* 400 */
+  @apply font-medium;     /* 500 */
+  @apply font-semibold;   /* 600 */
+  @apply font-bold;       /* 700 */
+  @apply font-extrabold;  /* 800 */
+  @apply font-black;      /* 900 */
+
+  /* 文字颜色 */
+  @apply text-white;      /* 白色 */
+  @apply text-black;      /* 黑色 */
+  @apply text-gray-500;   /* 灰色 */
+  @apply text-blue-500;   /* 蓝色 */
+  @apply text-red-500;    /* 红色 */
+  @apply text-green-500;  /* 绿色 */
+
+  /* 文字对齐 */
+  @apply text-left;       /* 左对齐 */
+  @apply text-center;     /* 居中 */
+  @apply text-right;      /* 右对齐 */
+  @apply text-justify;    /* 两端对齐 */
+
+  /* 行高 */
+  @apply leading-tight;   /* 1.25 */
+  @apply leading-normal;  /* 1.5 */
+  @apply leading-relaxed; /* 1.625 */
+
+  /* 字间距 */
+  @apply tracking-tight;  /* -0.025em */
+  @apply tracking-normal; /* 0em */
+  @apply tracking-wide;   /* 0.025em */
+
+  /* 其他文字样式 */
+  @apply underline;       /* 下划线 */
+  @apply line-through;    /* 删除线 */
+  @apply uppercase;       /* 全部大写 */
+  @apply lowercase;       /* 全部小写 */
+  @apply capitalize;      /* 首字母大写 */
+  @apply italic;          /* 斜体 */
+  @apply truncate;        /* 文字溢出省略号（white-space: nowrap;
+                             overflow: hidden; text-overflow: ellipsis;） */
+  @apply text-ellipsis;   /* 文字溢出省略号（配合 overflow-hidden 使用） */
+}
+
+/* 对应的 HTML 用法：
+ *
+ * <h1 class="text-4xl font-bold text-gray-900">大标题</h1>
+ * <p class="text-base text-gray-600 leading-relaxed">
+ *   这是一段正文内容，行高为 1.625，阅读更舒适。
+ * </p>
+ * <span class="text-sm text-red-500 font-medium">错误提示</span>
+ */
+
+
+/* --------------------------------------------------
+ * 3.6 背景与颜色工具类（Background / Color）
+ * --------------------------------------------------
+ * 背景颜色（bg-{颜色}-{色阶}）：
+ *   bg-white, bg-black, bg-transparent
+ *   bg-gray-100 ~ bg-gray-900
+ *   bg-blue-50 ~ bg-blue-950
+ *   bg-red-50 ~ bg-red-950
+ *   ...（支持所有颜色：green, yellow, orange, pink, purple, indigo, cyan, teal 等）
+ *
+ * 背景图片（bg-{类型}）：
+ *   bg-cover     → background-size: cover
+ *   bg-contain   → background-size: contain
+ *   bg-center    → background-position: center
+ *   bg-no-repeat → background-repeat: no-repeat
+ *
+ * 不透明度（opacity-{值}）：
+ *   opacity-0 = 0    opacity-25 = 0.25
+ *   opacity-50 = 0.5  opacity-75 = 0.75
+ *   opacity-100 = 1
+ * -------------------------------------------------- */
+
+.background-examples {
+  /* 背景颜色 */
+  @apply bg-white;       /* 白色背景 */
+  @apply bg-black;       /* 黑色背景 */
+  @apply bg-gray-50;     /* 极浅灰 */
+  @apply bg-gray-100;    /* 浅灰 */
+  @apply bg-gray-200;    /* 灰色 */
+  @apply bg-blue-50;     /* 极浅蓝 */
+  @apply bg-blue-100;    /* 浅蓝 */
+  @apply bg-blue-500;    /* 蓝色 */
+  @apply bg-blue-600;    /* 深蓝 */
+  @apply bg-red-500;     /* 红色 */
+  @apply bg-green-500;   /* 绿色 */
+  @apply bg-transparent; /* 透明背景 */
+
+  /* 背景图片相关 */
+  @apply bg-cover;       /* 背景图片覆盖 */
+  @apply bg-contain;     /* 背景图片包含 */
+  @apply bg-center;      /* 背景图片居中 */
+  @apply bg-no-repeat;   /* 背景图片不重复 */
+
+  /* 渐变背景（v4 新增更简洁的渐变语法） */
+  @apply bg-linear-to-r; /* 从左到右渐变 */
+  @apply bg-linear-to-b; /* 从上到下渐变 */
+  @apply bg-linear-to-br; /* 从左上到右下渐变 */
+
+  /* 渐变颜色停止点 */
+  /* 用法: bg-linear-to-r from-blue-500 to-purple-500 */
+  @apply from-blue-500;  /* 渐变起始色 */
+  @apply to-purple-500;  /* 渐变结束色 */
+  @apply via-green-500;  /* 渐变中间色 */
+
+  /* 不透明度 */
+  @apply opacity-0;      /* 完全透明 */
+  @apply opacity-25;     /* 25% 不透明度 */
+  @apply opacity-50;     /* 50% 不透明度 */
+  @apply opacity-75;     /* 75% 不透明度 */
+  @apply opacity-100;    /* 完全不透明 */
+}
+
+/* 对应的 HTML 用法：
+ *
+ * 纯色背景：
+ * <div class="bg-blue-500 text-white p-4 rounded-lg">
+ *   蓝色背景的卡片
+ * </div>
+ *
+ * 渐变背景：
+ * <div class="bg-linear-to-r from-blue-500 to-purple-500 text-white p-8 rounded-lg">
+ *   渐变背景的横幅
+ * </div>
+ *
+ * 背景图片：
+ * <div class="bg-cover bg-center h-64 rounded-lg"
+ *      style="background-image: url('/photo.jpg')">
+ * </div>
+ */
+
+
+/* --------------------------------------------------
+ * 3.7 边框与圆角工具类（Border / Rounded）
+ * --------------------------------------------------
+ * 边框宽度（border / border-{方向}-{宽度}）：
+ *   border       → 四周 1px 边框
+ *   border-0     → 无边框
+ *   border-2     → 2px 边框
+ *   border-4     → 4px 边框
+ *   border-8     → 8px 边框
+ *   border-t     → 仅顶部边框
+ *   border-b     → 仅底部边框
+ *
+ * 边框颜色（border-{颜色}-{色阶}）：
+ *   border-gray-300, border-blue-500 等
+ *
+ * 圆角（rounded-{大小}）：
+ *   rounded-none  = 0
+ *   rounded-sm    = 0.125rem (2px)
+ *   rounded       = 0.25rem (4px)
+ *   rounded-md    = 0.375rem (6px)
+ *   rounded-lg    = 0.5rem (8px)
+ *   rounded-xl    = 0.75rem (12px)
+ *   rounded-2xl   = 1rem (16px)
+ *   rounded-3xl   = 1.5rem (24px)
+ *   rounded-full  = 9999px（完全圆形）
+ * -------------------------------------------------- */
+
+.border-examples {
+  /* 边框宽度 */
+  @apply border;         /* 四周 1px 边框 */
+  @apply border-0;       /* 无边框 */
+  @apply border-2;       /* 2px 边框 */
+  @apply border-4;       /* 4px 边框 */
+
+  /* 单方向边框 */
+  @apply border-t;       /* 顶部边框 */
+  @apply border-b;       /* 底部边框 */
+  @apply border-s;       /* 左侧边框 */
+  @apply border-e;       /* 右侧边框 */
+
+  /* 边框颜色 */
+  @apply border-gray-200;  /* 浅灰边框 */
+  @apply border-gray-300;  /* 灰色边框 */
+  @apply border-blue-500;  /* 蓝色边框 */
+  @apply border-red-500;   /* 红色边框 */
+
+  /* 圆角 */
+  @apply rounded-none;   /* 无圆角 */
+  @apply rounded-sm;     /* 2px 圆角 */
+  @apply rounded;        /* 4px 圆角 */
+  @apply rounded-md;     /* 6px 圆角 */
+  @apply rounded-lg;     /* 8px 圆角 */
+  @apply rounded-xl;     /* 12px 圆角 */
+  @apply rounded-2xl;    /* 16px 圆角 */
+  @apply rounded-full;   /* 完全圆形/椭圆 */
+
+  /* 单方向圆角 */
+  @apply rounded-t-lg;   /* 顶部圆角 */
+  @apply rounded-b-lg;   /* 底部圆角 */
+  @apply rounded-l-lg;   /* 左侧圆角 */
+  @apply rounded-r-lg;   /* 右侧圆角 */
+}
+
+/* 对应的 HTML 用法：
+ *
+ * 卡片边框：
+ * <div class="border border-gray-200 rounded-lg p-4">
+ *   带边框和圆角的卡片
+ * </div>
+ *
+ * 分割线：
+ * <hr class="border-t border-gray-200 my-4">
+ *
+ * 圆形头像：
+ * <img src="avatar.jpg" class="w-12 h-12 rounded-full">
+ */
+
+
+/* --------------------------------------------------
+ * 3.8 阴影工具类（Shadow）
+ * --------------------------------------------------
+ * box-shadow 阴影：
+ *   shadow-none  → 无阴影
+ *   shadow-sm    → 小阴影
+ *   shadow       → 默认阴影
+ *   shadow-md    → 中等阴影
+ *   shadow-lg    → 大阴影
+ *   shadow-xl    → 超大阴影
+ *   shadow-2xl   → 巨大阴影
+ *   shadow-inner → 内阴影
+ *
+ * 阴影颜色（v4 新增）：
+ *   shadow-{颜色}-{色阶}  → 自定义阴影颜色
+ * -------------------------------------------------- */
+
+.shadow-examples {
+  /* 阴影大小 */
+  @apply shadow-none;    /* 无阴影 */
+  @apply shadow-sm;      /* 小阴影 */
+  @apply shadow;         /* 默认阴影 */
+  @apply shadow-md;      /* 中等阴影 */
+  @apply shadow-lg;      /* 大阴影 */
+  @apply shadow-xl;      /* 超大阴影 */
+  @apply shadow-2xl;     /* 巨大阴影 */
+  @apply shadow-inner;   /* 内阴影 */
+
+  /* 阴影颜色（v4 新特性） */
+  @apply shadow-blue-500/50; /* 蓝色半透明阴影 */
+  @apply shadow-red-500/30;  /* 红色半透明阴影 */
+}
+
+/* 对应的 HTML 用法：
+ *
+ * <div class="bg-white rounded-xl shadow-lg p-6">
+ *   带阴影的卡片，看起来有悬浮效果
+ * </div>
+ *
+ * <div class="bg-white rounded-xl shadow-blue-500/20 shadow-lg p-6">
+ *   带蓝色阴影的卡片
+ * </div>
+ */
+
+
+/* ============================================================
+ * 四、响应式设计
+ * ============================================================
+ *
+ * Tailwind 采用"移动优先"的响应式策略。
+ * 所有工具类默认在所有屏幕尺寸生效，
+ * 加上响应式前缀后，只在对应屏幕尺寸及以上生效。
+ *
+ * 断点（Breakpoints）：
+ *   (默认)  → 0px 及以上（移动端，无需前缀）
+ *   sm:     → 640px 及以上
+ *   md:     → 768px 及以上
+ *   lg:     → 1024px 及以上
+ *   xl:     → 1280px 及以上
+ *   2xl:    → 1536px 及以上
+ *
+ * 语法：{前缀}:{工具类}
+ * ============================================================ */
+
+.responsive-examples {
+  /* 移动端 1 列，中等屏幕 2 列，大屏幕 3 列 */
+  /* HTML: class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" */
+
+  /* 移动端堆叠，中等屏幕水平排列 */
+  /* HTML: class="flex flex-col md:flex-row gap-4" */
+
+  /* 移动端小字体，大屏幕大字体 */
+  /* HTML: class="text-base lg:text-xl" */
+
+  /* 移动端全宽，中等屏幕限制最大宽度并居中 */
+  /* HTML: class="w-full md:max-w-2xl md:mx-auto" */
+
+  /* 移动端隐藏，桌面端显示 */
+  /* HTML: class="hidden md:block" */
+
+  /* 桌面端隐藏，移动端显示 */
+  /* HTML: class="md:hidden" */
+
+  /* 移动端垂直内边距小，桌面端大 */
+  /* HTML: class="py-4 md:py-8" */
+
+  /* 移动端水平排列，中等屏幕改为网格 */
+  /* HTML: class="flex flex-col sm:flex-col md:grid md:grid-cols-3 gap-4" */
+}
+
+/* 完整的响应式布局示例 HTML：
+ *
+ * <div class="w-full max-w-6xl mx-auto px-4 py-8">
+ *   <h1 class="text-2xl md:text-4xl font-bold mb-4 md:mb-8">响应式标题</h1>
+ *   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+ *     <div class="bg-white rounded-lg shadow p-4 md:p-6">
+ *       <h3 class="text-lg font-semibold mb-2">卡片标题</h3>
+ *       <p class="text-sm text-gray-600">卡片内容</p>
+ *     </div>
+ *     <!-- 更多卡片... -->
+ *   </div>
+ * </div>
+ */
+
+
+/* ============================================================
+ * 五、交互状态（Hover / Focus / Active / Disabled）
+ * ============================================================
+ *
+ * Tailwind 使用状态前缀来定义元素在不同交互状态下的样式。
+ *
+ * 语法：{状态}:{工具类}
+ *
+ * 常用状态：
+ *   hover:    → 鼠标悬停时
+ *   focus:    → 获得焦点时（如 input 被点击）
+ *   active:   → 被按下时（鼠标按下不松开）
+ *   focus-within: → 子元素获得焦点时
+ *   visited:  → 链接已被访问过
+ *   disabled: → 元素被禁用时
+ *   first:    → 第一个子元素
+ *   last:     → 最后一个子元素
+ *   odd:      → 奇数行
+ *   even:     → 偶数行
+ * ============================================================ */
+
+.state-examples {
+  /* --- Hover 悬停状态 --- */
+  /* 鼠标悬停时改变背景色 */
+  /* HTML: class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded" */
+
+  /* 鼠标悬停时改变文字颜色 */
+  /* HTML: class="text-gray-600 hover:text-blue-500" */
+
+  /* 鼠标悬停时显示阴影 */
+  /* HTML: class="shadow hover:shadow-lg transition-shadow" */
+
+  /* 鼠标悬停时放大 */
+  /* HTML: class="hover:scale-105 transition-transform" */
+
+  /* --- Focus 焦点状态 --- */
+  /* 输入框获得焦点时的样式 */
+  /* HTML: class="border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none" */
+
+  /* 按钮获得焦点时的样式 */
+  /* HTML: class="bg-blue-500 focus:bg-blue-600 focus:ring-2 focus:ring-blue-300 focus:ring-offset-2" */
+
+  /* --- Active 按下状态 --- */
+  /* 按钮被按下时的样式 */
+  /* HTML: class="bg-blue-500 hover:bg-blue-700 active:bg-blue-800" */
+
+  /* --- Disabled 禁用状态 --- */
+  /* 禁用按钮 */
+  /* HTML: class="bg-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed cursor-pointer" */
+
+  /* --- 组合状态 --- */
+  /* 可以链式组合多个状态 */
+  /* HTML: class="bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 active:bg-blue-800 disabled:bg-gray-300" */
+
+  /* --- 其他伪类 --- */
+  /* 第一个子元素 */
+  /* HTML: class="first:mt-0" */
+
+  /* 最后一个子元素 */
+  /* HTML: class="last:mb-0" */
+
+  /* 奇数行/偶数行（常用于表格） */
+  /* HTML: class="even:bg-gray-50 odd:bg-white" */
+}
+
+/* 完整的按钮状态示例 HTML：
+ *
+ * 主要按钮：
+ * <button class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700
+ *                focus:ring-2 focus:ring-blue-300 focus:ring-offset-2
+ *                disabled:bg-gray-300 disabled:cursor-not-allowed
+ *                text-white font-medium px-6 py-2 rounded-lg
+ *                transition-colors duration-200">
+ *   点击我
+ * </button>
+ *
+ * 链接样式：
+ * <a href="#" class="text-blue-500 hover:text-blue-700 hover:underline
+ *                     focus:outline-none focus:ring-2 focus:ring-blue-200 rounded">
+ *   这是一个链接
+ * </a>
+ *
+ * 输入框样式：
+ * <input type="text"
+ *        class="w-full px-4 py-2 border border-gray-300 rounded-lg
+ *               focus:border-blue-500 focus:ring-2 focus:ring-blue-200
+ *               placeholder-gray-400 text-gray-900
+ *               transition-colors duration-200"
+ *        placeholder="请输入内容">
+ */
+
+
+/* ============================================================
+ * 六、综合实战示例
+ * ============================================================
+ *
+ * 下面是一个完整的页面布局示例，综合运用了以上所有知识点。
+ * ============================================================ */
+
+/* 示例：一个简单的用户信息卡片 */
+/*
+  <div class="max-w-sm mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-32"></div>
+    <img src="avatar.jpg"
+         class="w-20 h-20 rounded-full border-4 border-white -mt-10 mx-auto">
+    <div class="px-6 py-4 text-center">
+      <h2 class="text-xl font-bold text-gray-900">张三</h2>
+      <p class="text-sm text-gray-500 mt-1">前端开发工程师</p>
+      <p class="text-sm text-gray-600 mt-3 leading-relaxed">
+        热爱技术，喜欢用 Tailwind CSS 构建美观的界面。
+      </p>
+      <div class="flex justify-center gap-3 mt-4">
+        <button class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700
+                       text-white text-sm font-medium px-4 py-2 rounded-lg
+                       transition-colors duration-200">
+          关注
+        </button>
+        <button class="border border-gray-300 hover:bg-gray-50
+                       text-gray-700 text-sm font-medium px-4 py-2 rounded-lg
+                       transition-colors duration-200">
+          发消息
+        </button>
+      </div>
+    </div>
+  </div>
+*/
+
+/* 示例：响应式导航栏 */
+/*
+  <nav class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <div class="text-xl font-bold text-blue-600">MyApp</div>
+        <div class="hidden md:flex items-center gap-6">
+          <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors">首页</a>
+          <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors">产品</a>
+          <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors">关于</a>
+          <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg
+                         transition-colors duration-200">
+            登录
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+*/
